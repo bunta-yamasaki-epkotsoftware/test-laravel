@@ -1,21 +1,12 @@
 services:
-<<<<<<< HEAD
 
   web:
-=======
-    
-  web: 
->>>>>>> 01bfe33edf4bcd69ae9aebeed2558a9a0a10509f
     container_name: myapp-php
     build: ./docker-config/php
     ports:
       - '5173:5173'
     volumes:
-<<<<<<< HEAD
       - ./my-app:/var/www/
-=======
-      - .:/var/www/
->>>>>>> 01bfe33edf4bcd69ae9aebeed2558a9a0a10509f
     depends_on:
       - mariadb
 
@@ -26,11 +17,7 @@ services:
     ports:
       - "81:80"
     volumes:
-<<<<<<< HEAD
       - ./my-app:/var/www/
-=======
-      - .:/var/www
->>>>>>> 01bfe33edf4bcd69ae9aebeed2558a9a0a10509f
       - ./docker-config/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - web
@@ -46,11 +33,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: ${TZ}
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> 01bfe33edf4bcd69ae9aebeed2558a9a0a10509f
     volumes:
       - ./docker-config/mariadb/data:/var/lib/mysql
       - ./docker-config/mariadb/data/my.cnf:/etc/mysql/conf.d/my.cnf
