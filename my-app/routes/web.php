@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//編集・削除はログインが必要だが、権限はポリシーで制限
 Route::resource('posts', PostController::class);
+
+//コメントを投稿するルーティング
+Route::post('posts/{post}/comments',[CommentController::class, 'store'])->name('comments.store');
 
 require __DIR__.'/auth.php';

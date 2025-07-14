@@ -14,7 +14,7 @@
                 <ul class="navbar-nav">
                     @if (Auth::check())
                         <li class="nav-item">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="=display: none;">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                             <a class="nav-link text-white" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
@@ -32,6 +32,8 @@
         </div>
     </nav>
 
+    <div class="container" style="max-width: 1000px;">
     @yield('content')
+    </div>
 </body>
 </html>

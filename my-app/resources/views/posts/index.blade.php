@@ -7,21 +7,31 @@
 @endif
 
 @section('content')
-    <div class="container" style="max-width: 1000px;">
-        <h1>Posts List</h1>
-        <a href="{{route('posts.create')}}" class="btn btn-primary mb-3">新規投稿</a>
-        <p>ここに投稿のリストが表示されます。</p>
+    <h1>Posts List</h1>
+    <a href="{{route('posts.create')}}" class="btn btn-primary mb-3">新規投稿</a>
+    <p>ここに投稿のリストが表示されます。</p>
 
-        @foreach ($posts as $post)
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{$post->title}}</h5>
-                    <p class="card-text">{{$post->content}}</p>
-                </div>
-                <div class="card-footer">
-                    <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-secondary">詳細</a>
-                </div>
+    <form action="{{route('posts.index')}}" method="GET" class="mb-3">
+        <div class="input-group">
+            <select name="search_type" class="form-select">
+                <option value="partial" {{ request('search_type') == 'partial' ? 'selected' : '' }}>部分一致</option>
+                <option value="prefix" {{ request('search_type') == 'prefix' ? 'selected' : '' }}>前方一致</option>
+                <option value="suffix" {{ request('search_type') == 'suffix' ? 'selected' : '' }}>後方一致</option>
+            </select>
+            <input type="text" name="search" class="form-control" placeholder="検索キーワードを入力" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-outline-primary">検索</button>
+        </div>
+    </form>
+
+    @foreach ($posts as $post)
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{$post->title}}</h5>
+                <p class="card-text">{{$post->content}}</p>
             </div>
-        @endforeach
-    </div>
+            <div class="card-footer">
+                <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-secondary">詳細</a>
+            </div>
+        </div>
+    @endforeach
 @endsection

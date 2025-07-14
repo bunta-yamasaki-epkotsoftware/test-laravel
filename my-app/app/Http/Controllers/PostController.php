@@ -11,9 +11,35 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
+        // Postモデルに対するクエリビルダーを作成
+        $query = Post::query(); // これにより、柔軟な検索条件を追加できる
+        // dd($request);
+
+        // リクエストに "search" パラメータが存在し、値が空でない場合に処理を実行
+        if($request->has('search') && $request->filled('search')) {
+            $searchType = $request->input('search_type');
+            // dd($searchType);
+            $searchKeyword = $request->input('search');
+
+            switch($searchType) {
+                case 'prefix':
+                    $query->where('title', 'like', $searchKeyword . '%');
+                    break;
+                case 'suffix':
+                    $query->where('title', 'like', '%' . $searchKeyword);
+                    break;
+                case 'partial':
+                    $query->where('title', 'like', '%' . $searchKeyword . '%');
+                    break;
+                default:
+                    $query->where('title', 'like', '%' . $searchKeyword . '%');
+                    break;
+            }
+        }
+
+        $posts = $query->get();
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -58,7 +84,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with('comments.user')->findOrFail($id);
+        // dd($post);
         return view('posts.show', ['post' => $post]);
     }
 
