@@ -53,4 +53,9 @@
             </div>
         </div>
     @endforeach
+
+    <!-- ページネーション -->
+     <div class="d-flex justify-content-center">
+        {{ $posts->links()}}
+     </div>
 @endsection

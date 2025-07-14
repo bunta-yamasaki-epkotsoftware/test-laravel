@@ -62,7 +62,7 @@ class PostController extends Controller
                 break;
         }
 
-        $posts = $query->get();
+        $posts = $query->paginate(3); // ページネーションを適用
 
         return view('posts.index', ['posts' => $posts]);
     }
@@ -110,7 +110,8 @@ class PostController extends Controller
     {
         $post = Post::with('comments.user')->findOrFail($id);
         // dd($post);
-        return view('posts.show', ['post' => $post]);
+        $comments = $post->comments()->with('user')->paginate(1);
+        return view('posts.show', ['post' => $post, 'comments' => $comments]);
     }
 
     /**

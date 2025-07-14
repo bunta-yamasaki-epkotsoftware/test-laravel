@@ -20,7 +20,10 @@
         @endif
     <!-- コメント一覧 -->
     <h3>コメント一覧</h3>
-        @foreach ($post->comments as $comment)
+    @if($comments->isEmpty())
+        <p>コメントはまだありません。</p>
+    @else
+        @foreach ($comments as $comment)
             <div class="card mb-2">
                 <div class="card-body">
                     <p class="card-text">{{ $comment->content }}</p>
@@ -28,6 +31,8 @@
                 </div>
             </div>
         @endforeach
+    @endif
+
     <!-- コメントフォーム -->
     <h3>コメントを投稿する</h3>
     @auth
@@ -42,4 +47,9 @@
     @else
         <p>コメントを投稿するにはログインしてください。</p>
     @endauth
+
+    <!-- ページネーション -->
+     <div class="d-flex justify-content-center mt-4">
+        {{ $comments->links()}}
+     </div>
 @endsection
