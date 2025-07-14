@@ -17,6 +17,7 @@ class PostController extends Controller
         $query = Post::query(); // これにより、柔軟な検索条件を追加できる
         // dd($request);
 
+        //絞り込み検索
         // リクエストに "search" パラメータが存在し、値が空でない場合に処理を実行
         if($request->has('search') && $request->filled('search')) {
             $searchType = $request->input('search_type');
@@ -39,7 +40,30 @@ class PostController extends Controller
             }
         }
 
+        //ソート処理
+        // dd($request->input('sort', 'newest'));
+        $sortType = $request->input('sort', 'newest');
+
+        switch($sortType) {
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'title_asc':
+                $query->orderBy('title', 'asc');
+                break;
+            case 'title_desc':
+                $query->orderBy('title', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
         $posts = $query->get();
+
         return view('posts.index', ['posts' => $posts]);
     }
 
