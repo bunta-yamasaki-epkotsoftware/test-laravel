@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,8 @@ Route::resource('posts', PostController::class);
 
 //コメントを投稿するルーティング
 Route::post('posts/{post}/comments',[CommentController::class, 'store'])->name('comments.store');
+
+//いいね機能のルーティング
+Route::post('posts/{post}/like', [LikeController::class, 'toggleLike'])->name('posts.like')->middleware('auth');
 
 require __DIR__.'/auth.php';

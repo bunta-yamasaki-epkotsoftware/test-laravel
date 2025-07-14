@@ -18,6 +18,16 @@
                 <button type="submit" class="btn btn-danger">削除</button>
             </form>
         @endif
+    <!-- いいねボタン -->
+     <form action="{{ route('posts.like', $post->id) }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="btn {{$post->likes->contains('user_id', auth()->id()) ? 'btn-danger' : 'btn-outline-danger'}}">
+            {!! $post->likes->contains('user_id', auth()->id()) ? '<i class="bi bi-heart-fill"></i>' : '<i class="bi bi-heart"></i>' !!}
+        </button>
+     </form>
+     <!-- いいねの数の表示 -->
+      <p>{{ $post->likes->count() }}件のいいね</p>
+
     <!-- コメント一覧 -->
     <h3>コメント一覧</h3>
     @if($comments->isEmpty())
