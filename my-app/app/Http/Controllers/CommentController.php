@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Notifications\CommentNotification;
 
 class CommentController extends Controller
 {
@@ -19,6 +20,9 @@ class CommentController extends Controller
             'user_id' => auth()->id(),
             'content' => $request->content,
         ]);
+
+        //投稿者に通知を送信
+        $post->user->notify(new CommentNotification($post));
 
         return redirect()->route('posts.show', $post->id);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\LikeNotification;
 
 class LikeController extends Controller
 {
@@ -23,6 +24,9 @@ class LikeController extends Controller
             $like->delete(); // いいねを削除
         } else {
             $post->likes()->create(['user_id' => $user->id]); // いいねを追加
+
+            // 投稿者に通知を送信
+            $post->user->notify(new LikeNotification($post));
         }
 
         return redirect()->back();
