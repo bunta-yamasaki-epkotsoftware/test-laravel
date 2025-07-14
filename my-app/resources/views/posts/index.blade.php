@@ -1,5 +1,11 @@
 @extends('layout.layout')
 
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 @section('content')
     <div class="container" style="max-width: 1000px;">
         <h1>Posts List</h1>
@@ -13,12 +19,7 @@
                     <p class="card-text">{{$post->content}}</p>
                 </div>
                 <div class="card-footer">
-                    <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-secondary">編集</a>
-                    <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">削除</button>
-                    </form>
+                    <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-secondary">詳細</a>
                 </div>
             </div>
         @endforeach

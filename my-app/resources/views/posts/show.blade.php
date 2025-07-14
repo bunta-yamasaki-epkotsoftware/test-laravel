@@ -11,6 +11,13 @@
                     <p class="card-text">{{$post->content}}</p>
                 </div>
             </div>
-            <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-info">編集</a>
+            @if (Auth::check() && Auth::id() === $post->user_id)
+                <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-info">編集</a>
+                <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </form>
+            @endif
     </div>
 @endsection

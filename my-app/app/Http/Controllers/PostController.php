@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -21,6 +22,10 @@ class PostController extends Controller
      */
     public function create()
     {
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
+
         return view('posts.create');
     }
 
@@ -29,6 +34,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
+
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
@@ -38,6 +48,7 @@ class PostController extends Controller
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
+            'user_id' => auth()->id(), //Auth::id()
         ]);
         return redirect()->route('posts.index');
     }
@@ -57,6 +68,12 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::findOrFail($id);
+
+        // 認証されたユーザーが投稿の所有者であるかどうかを確認する
+        if(Auth::id() !== $post->user_id) {
+            return redirect()->route('posts.index')->with('error', 'Unauthorized access to edit this post.');
+        }
+
         return view('posts.edit', ['post' => $post]);
     }
 
@@ -85,6 +102,11 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
+
+        if(Auth::id() !== $post->user_id) {
+            return redirect()->route('posts.index');
+        }
+
         $post->delete();
         return redirect()->route('posts.index');
     }
