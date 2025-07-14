@@ -28,6 +28,9 @@
                             <a class="nav-link text-white" href="{{ route('register') }}">新規登録</a>
                         </li>
                     @endif
+                    <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('contact.index') }}">お問い合わせ</a>
+                    </li>
                 </ul>
             </div>
         </div>
