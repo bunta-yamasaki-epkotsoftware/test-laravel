@@ -22,7 +22,7 @@ class CommentController extends Controller
         ]);
 
         //投稿者に通知を送信
-        $post->user->notify(new CommentNotification($post));
+        // $post->user->notify(new CommentNotification($post));
 
         return redirect()->route('posts.show', $post->id);
     }

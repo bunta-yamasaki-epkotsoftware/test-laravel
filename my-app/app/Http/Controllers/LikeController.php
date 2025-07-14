@@ -11,6 +11,8 @@ class LikeController extends Controller
 {
     public function toggleLike(Post $post)
     {
+        // $post->load('user'); // ←これを追加
+
         //ログインしていなければ、ログインページにリダイレクト
         if(!Auth::check()) {
             return redirect()->route('login');
@@ -26,7 +28,9 @@ class LikeController extends Controller
             $post->likes()->create(['user_id' => $user->id]); // いいねを追加
 
             // 投稿者に通知を送信
-            $post->user->notify(new LikeNotification($post));
+            // if ($post->user) {
+            //     $post->user->notify(new LikeNotification($post));
+            // }
         }
 
         return redirect()->back();
